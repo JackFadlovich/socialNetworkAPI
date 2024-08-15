@@ -1,7 +1,6 @@
 const Thought = require('../models/Thought'); // Adjust the path as necessary
 const User = require('../models/User'); // To update the user with new thoughts
 
-
 module.exports = {
   async getThoughts(req, res) {
     try {
@@ -10,7 +9,6 @@ module.exports = {
     } catch (error) {
       res.status(400).json({ message: error.message });
     }},
-
 
   async getThoughtById(req, res) {
     try {
@@ -54,4 +52,34 @@ module.exports = {
       res.status(204).end();
     } catch (error) {
       res.status(400).json({ message: error.message });
-    }},}
+    }},
+
+  async addReaction(req, res) {
+    try {
+      const thought = await Thought.findByIdAndUpdate(
+        req.params.thoughtId,
+        { $push: { reactions: req.body } },
+        { new: true, runValidators: true }
+      );
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought found with this ID' });
+      }
+      res.status(201).json(thought);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }},
+
+  async removeReaction(req, res) {
+    try {
+      const thought = await Thought.findByIdAndUpdate(
+        req.params.thoughtId,
+        { $pull: { reactions: { _id: req.params.reactionId } } },
+        { new: true }
+      );
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought found with this ID' });
+      }
+      res.status(200).json(thought);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }},};
