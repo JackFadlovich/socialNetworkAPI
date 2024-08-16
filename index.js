@@ -16,6 +16,3 @@ db.once('open', () => {
     console.log(`API server for running on port ${PORT}!`);
   });
 });
-
-
-// get my user id not username
