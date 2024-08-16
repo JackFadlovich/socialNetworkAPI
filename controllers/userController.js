@@ -53,13 +53,13 @@ async createUser(req, res) {
       res.status(400).json({ message: error.message });
     }},
 
-  async deleteFriend
-  (req, res) {
+  async deleteFriend(req, res) {
     try {
-      const user = await User.findById
+      console.log("sus");
+      const user = await User.findByIdAndUpdate(
       req.params.id,
       { $pull: { friends: req.params.friendId } },
-      { new: true };
+      { new: true })
       res.status(200).json(user);
     } catch (error) {
       res.status(400).json({ message: error.message });
