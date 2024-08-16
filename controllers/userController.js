@@ -38,4 +38,31 @@ async createUser(req, res) {
       res.status(200).json({ message: 'User was succsefuly deleted' });
     } catch (error) {
       res.status(400).json({ message: error.message });
-    }}};
+    }},
+  async addFriend(req, res) {
+    try {
+      const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { $push: { friends: req.params.friendId } },
+      { new: true });
+      if (!user) {
+        return res.status(404).json({ message: 'No user found with this ID' });
+      }
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }},
+
+  async deleteFriend
+  (req, res) {
+    try {
+      const user = await User.findById
+      req.params.id,
+      { $pull: { friends: req.params.friendId } },
+      { new: true };
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }},
+  
+  };
